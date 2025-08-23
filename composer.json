@@ -1,5 +1,5 @@
 {
-  "name": "matapatos/my-plugin",
+  "name": "attributes-php/my-plugin",
   "description": "Sample plugin that demonstrates how to use FastEndpoints",
   "minimum-stability": "stable",
   "license": "MIT",
@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^8.1",
-    "matapatos/wp-fastendpoints": "^1.1"
+    "attributes-php/wp-fastendpoints": "^3.0"
   },
   "autoload": {
     "psr-4": {
@@ -19,6 +19,9 @@
     },
     "files": [
       "src/constants.php"
+    ],
+    "classmap": [
+      "src/Api/Models"
     ]
   },
   "autoload-dev": {
@@ -33,11 +36,14 @@
   },
   "scripts": {
     "lint": "./vendor/bin/pint --config pint.json",
-    "setup:wp:6.0": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.0.8 --skip-delete --no-interaction",
-    "setup:wp:6.1": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.1.6 --skip-delete --no-interaction",
-    "setup:wp:6.2": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.2.5 --skip-delete --no-interaction",
-    "setup:wp:6.3": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.3.4 --skip-delete --no-interaction",
-    "setup:wp:6.4": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.4.4 --skip-delete --no-interaction",
+    "setup:wp:6.0": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.0.10 --skip-delete --no-interaction",
+    "setup:wp:6.1": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.1.8 --skip-delete --no-interaction",
+    "setup:wp:6.2": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.2.7 --skip-delete --no-interaction",
+    "setup:wp:6.3": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.3.6 --skip-delete --no-interaction",
+    "setup:wp:6.4": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.4.6 --skip-delete --no-interaction",
+    "setup:wp:6.5": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.5.6 --skip-delete --no-interaction",
+    "setup:wp:6.6": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.6.3 --skip-delete --no-interaction",
+    "setup:wp:6.7": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --wp-version 6.7.3 --skip-delete --no-interaction",
     "setup:wp:latest": "rm -rf wp/ && ./vendor/bin/wp-pest setup plugin --plugin-slug my-plugin --skip-delete --no-interaction",
     "test:lint": "./vendor/bin/pint --test",
     "test:unit": "./vendor/bin/pest --colors=always --group=unit",

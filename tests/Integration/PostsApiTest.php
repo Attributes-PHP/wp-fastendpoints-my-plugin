@@ -3,8 +3,6 @@
 /**
  * Holds integration tests for the Posts Router
  *
- * @since 1.0.0
- *
  * @license MIT
  */
 
@@ -32,7 +30,7 @@ beforeEach(function () {
     // Set up a REST server instance.
     global $wp_rest_server;
 
-    $this->server = $wp_rest_server = new \WP_REST_Server();
+    $this->server = $wp_rest_server = new \WP_REST_Server;
     do_action('rest_api_init', $this->server);
 });
 
@@ -56,7 +54,7 @@ test('REST API endpoints registered', function () {
         ->and($routes['/my-plugin/v1/posts'])
         ->toHaveCount(1)
         ->and($routes['/my-plugin/v1/posts/(?P<ID>[\\d]+)'])
-        ->toHaveCount(3);
+        ->toHaveCount(2);
 })->group('api', 'posts');
 
 test('Create a new post', function () {
@@ -70,8 +68,7 @@ test('Create a new post', function () {
     $request->set_body_params([
         'post_title' => 'My testing message',
         'post_status' => 'publish',
-        'post_type' => 'post',
-        'post_content' => '<p>Message body</p>',
+        'post_author' => $userId,
     ]);
     $response = $this->server->dispatch($request);
     expect($response->get_status())->toBe(201);
@@ -81,34 +78,28 @@ test('Create a new post', function () {
         ->toBeInstanceOf(\WP_Post::class)
         ->toHaveProperty('post_title', 'My testing message')
         ->toHaveProperty('post_status', 'publish')
-        ->toHaveProperty('post_type', 'post')
-        ->toHaveProperty('post_content', '<p>Message body</p>');
+        ->toHaveProperty('post_author', $userId);
 })->group('api', 'posts');
 
-test('Update a post', function () {
+test('Retrieves a post', function () {
     // Create user with correct permissions
     $userId = $this::factory()->user->create();
     $user = get_user_by('id', $userId);
-    $user->add_cap('edit_published_posts');
+    $user->add_cap('read');
     // Create post
-    $postId = $this::factory()->post->create(['post_author' => $userId]);
+    $postId = $this::factory()->post->create(['post_author' => $userId, 'post_title' => 'My testing message']);
     // Make request as that user
     wp_set_current_user($userId);
-    $request = new \WP_REST_Request('PUT', "/my-plugin/v1/posts/{$postId}");
-    $request->set_body_params([
-        'post_title' => 'Updated post title',
-        'post_status' => 'draft',
-        'post_type' => 'post',
-        'post_content' => '<p>New message body</p>',
-    ]);
+    $request = new \WP_REST_Request('GET', "/my-plugin/v1/posts/{$postId}");
     $response = $this->server->dispatch($request);
-    // Check that the post details were updated
+    // Ensures only the correct fields are returned
     expect($response->get_status())->toBe(200)
-        ->and(get_post($postId))
-        ->toHaveProperty('post_title', 'Updated post title')
-        ->toHaveProperty('post_status', 'draft')
-        ->toHaveProperty('post_type', 'post')
-        ->toHaveProperty('post_content', '<p>New message body</p>');
+        ->and($response->get_data())
+        ->toEqual([
+            'post_title' => 'My testing message',
+            'post_author' => $userId,
+            'post_status' => 'publish',
+        ]);
 })->group('api', 'posts');
 
 test('Delete a post', function () {
@@ -128,14 +119,12 @@ test('Delete a post', function () {
         ->toHaveProperty('post_status', 'trash');
 })->group('api', 'posts');
 
-test('Trying to manipulate a post without enough permissions', function (string $method, string $route) {
-    $userId = $this::factory()->user->create();
-    wp_set_current_user($userId);
+test('Trying to manipulate a post without permissions', function (string $method, string $route) {
     $request = new \WP_REST_Request($method, $route);
     $response = $this->server->dispatch($request);
     expect($response->get_status())->toBe(403);
 })->with([
     ['POST', '/my-plugin/v1/posts'],
-    ['PUT', '/my-plugin/v1/posts/1'],
+    ['GET', '/my-plugin/v1/posts/1'],
     ['DELETE', '/my-plugin/v1/posts/1'],
 ])->group('api', 'posts');

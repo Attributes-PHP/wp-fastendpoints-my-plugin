@@ -21,7 +21,7 @@ if (! file_exists($composer)) {
 
 require_once $composer;
 
-$myPlugin = new \MyPlugin\Providers\MyPluginProvider();
+$myPlugin = new \MyPlugin\Providers\MyPluginProvider;
 $myPlugin->register();
 
 add_action('init', [$myPlugin, 'boot']);

@@ -1,12 +1,14 @@
 <?php
 
 /**
- * Holds constants used across the plugin. This is file is loaded by composer
- *
- * @since 1.0.0
+ * Holds constants used across the plugin
  *
  * @license MIT
  */
-define('MY_PLUGIN_DIR', __DIR__);
-define('ROUTERS_DIR', MY_PLUGIN_DIR.'/Api/Routers');
-define('SCHEMAS_DIR', MY_PLUGIN_DIR.'/Api/Schemas');
+if (! defined('MY_PLUGIN_DIR')) {
+    define('MY_PLUGIN_DIR', __DIR__);
+}
+
+if (! defined('ROUTERS_DIR')) {
+    define('ROUTERS_DIR', MY_PLUGIN_DIR.'/Api/Routers');
+}

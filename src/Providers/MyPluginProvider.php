@@ -1,8 +1,7 @@
 <?php
+
 /**
  * Service Provider responsible to boot my plugin
- *
- * @since 1.0.0
  *
  * @license MIT
  */
@@ -13,8 +12,6 @@ namespace MyPlugin\Providers;
 
 /**
  * Class responsible to boot the whole plugin
- *
- * @since 1.0.0
  *
  * @author André Gil <andre_gil22@hotmail.com>
  */
@@ -27,7 +24,7 @@ class MyPluginProvider implements ProviderContract
     public function register(): void
     {
         foreach ($this->allProviders as $provider) {
-            $provider = new $provider();
+            $provider = new $provider;
             $provider->register();
         }
     }
