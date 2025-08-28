@@ -22,7 +22,7 @@
 
 - PHP 8.1+
 - WordPress 6.x
-- [matapatos/wp-fastendpoints](https://packagist.org/packages/matapatos/wp-fastendpoints)
+- [attributes-php/wp-fastendpoints](https://packagist.org/packages/attributes-php/wp-fastendpoints)
 
 ## Installation
 
