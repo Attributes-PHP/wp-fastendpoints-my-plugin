@@ -13,7 +13,6 @@
 ## Features
 
 - Sample router to manipulate blog posts (create, update, retrieve and delete)
-- Sample JSON schemas to validate those requests. For more schemas properties visit [json/opis »](https://opis.io/json-schema/2.x/)
 - Out of the box Unit tests + Integration tests using [pestphp](https://pestphp.com/) thanks to [dingo-d/wp-pest](https://github.com/dingo-d/wp-pest)
 - PHP code style fixer using [laravel/pint](https://github.com/laravel/pint)
 - Composer scripts for running tests + linter + setting up WordPress
