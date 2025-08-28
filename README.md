@@ -57,6 +57,9 @@ composer setup:wp:6.1     # For the latest 6.1.x version
 composer setup:wp:6.2     # For the latest 6.2.x version
 composer setup:wp:6.3     # For the latest 6.3.x version
 composer setup:wp:6.4     # For the latest 6.4.x version
+composer setup:wp:6.5     # For the latest 6.5.x version
+composer setup:wp:6.6     # For the latest 6.6.x version
+composer setup:wp:6.7     # For the latest 6.7.x version
 composer setup:wp:latest  # For the latest x.x.x version
 ```
 
