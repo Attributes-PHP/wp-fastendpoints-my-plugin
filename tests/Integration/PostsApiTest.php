@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace MyPlugin\Tests\Integration;
 
 use MyPlugin\Tests\Helpers;
+use WP_REST_Request;
+use WP_REST_Server;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 if (! Helpers::isIntegrationTest()) {
@@ -30,13 +32,13 @@ beforeEach(function () {
     // Set up a REST server instance.
     global $wp_rest_server;
 
-    $this->server = $wp_rest_server = new \WP_REST_Server;
+    $this->server = $wp_rest_server = new WP_REST_Server;
     do_action('rest_api_init', $this->server);
 });
 
 afterEach(function () {
     global $wp_rest_server;
-    $wp_rest_server = null;
+    $this->server = $wp_rest_server = null;
 
     parent::tearDown();
 });
@@ -64,7 +66,7 @@ test('Create a new post', function () {
     $user->add_cap('publish_posts');
     // Make request as that user
     wp_set_current_user($userId);
-    $request = new \WP_REST_Request('POST', '/my-plugin/v1/posts');
+    $request = new WP_REST_Request('POST', '/my-plugin/v1/posts');
     $request->set_body_params([
         'post_title' => 'My testing message',
         'post_status' => 'publish',
@@ -90,7 +92,7 @@ test('Retrieves a post', function () {
     $postId = $this::factory()->post->create(['post_author' => $userId, 'post_title' => 'My testing message']);
     // Make request as that user
     wp_set_current_user($userId);
-    $request = new \WP_REST_Request('GET', "/my-plugin/v1/posts/{$postId}");
+    $request = new WP_REST_Request('GET', "/my-plugin/v1/posts/{$postId}");
     $response = $this->server->dispatch($request);
     // Ensures only the correct fields are returned
     expect($response->get_status())->toBe(200)
@@ -111,7 +113,7 @@ test('Delete a post', function () {
     $postId = $this::factory()->post->create(['post_author' => $userId]);
     // Make request as that user
     wp_set_current_user($userId);
-    $request = new \WP_REST_Request('DELETE', "/my-plugin/v1/posts/{$postId}");
+    $request = new WP_REST_Request('DELETE', "/my-plugin/v1/posts/{$postId}");
     $response = $this->server->dispatch($request);
     // Check that the post has been deleted
     expect($response->get_status())->toBe(200)
@@ -120,7 +122,7 @@ test('Delete a post', function () {
 })->group('api', 'posts');
 
 test('Trying to manipulate a post without permissions', function (string $method, string $route) {
-    $request = new \WP_REST_Request($method, $route);
+    $request = new WP_REST_Request($method, $route);
     $response = $this->server->dispatch($request);
     expect($response->get_status())->toBe(403);
 })->with([
